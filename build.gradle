@@ -1,0 +1,59 @@
+buildscript {
+    ext {
+        junitVersion = '4.12'
+        serenityVersion = '2.1.6'
+        serenityCucumberVersion = '1.9.51'
+        appiumJavaClient = '7.3.0'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.serenity-bdd', name: 'serenity-gradle-plugin', version: serenityVersion
+    }
+}
+
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'net.serenity-bdd.aggregator'
+
+group 'com.chungnd.demo'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: junitVersion
+    testCompile group: 'net.serenity-bdd', name: 'serenity-cucumber', version: serenityCucumberVersion
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
+    compile group: 'net.serenity-bdd', name: 'serenity-junit', version: serenityVersion
+    compile group: 'net.serenity-bdd', name: 'serenity-core', version: serenityVersion
+    compile group: 'net.serenity-bdd', name: 'serenity-screenplay', version: serenityVersion
+    compile group: 'net.serenity-bdd', name: 'serenity-screenplay-webdriver', version: serenityVersion
+    compile group: 'net.serenity-bdd', name: 'serenity-ensure', version: serenityVersion
+    compile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: serenityVersion
+    compile group: 'io.appium', name: 'java-client', version: appiumJavaClient
+
+
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    testCompileOnly 'org.projectlombok:lombok:1.18.12'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+}
+
+test {
+    testLogging.showStandardStreams = true
+    systemProperties System.getProperties()
+}
+test.finalizedBy(aggregate)
